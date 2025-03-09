@@ -105,6 +105,13 @@ st.markdown("""
         margin-bottom: 20px;
         border-left: 5px solid #00acc1;
     }
+    .output-section {
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0px;
+        border: 1px solid #e0e0e0;
+    }
     .row-title {
         font-size: 28px !important;
         margin: 20px 0px 15px 0px;
@@ -112,13 +119,6 @@ st.markdown("""
         text-align: center;
         border-bottom: 1px solid #e0e0e0;
         padding-bottom: 10px;
-    }
-    .output-section {
-        background-color: #f5f5f5;
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px 0px;
-        border: 1px solid #e0e0e0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1061,7 +1061,13 @@ def main():
                             file_name=download_filename,
                             mime="audio/wav"
                         )
-                    st.markdown("</div>", unsafe_allow_html=True)
+                    # Close the output section with a visible footer
+                    st.markdown("""
+                    <div style="text-align: right; font-size: 0.8em; color: #888; margin-top: 10px;">
+                      Generated voice ready for download and use
+                    </div>
+                    </div>
+                    """, unsafe_allow_html=True)
                     
                 except Exception as e:
                     error_msg = f"Error generating voice: {str(e)}"
@@ -1069,7 +1075,7 @@ def main():
                     st.error(error_msg)
 
     # THIRD ROW - Tips Section
-    st.markdown("<div class='row-title' style='margin-top: 40px;'>Tips for Better Results</div>", unsafe_allow_html=True)
+    st.markdown("<div class='row-title' style='margin-top: 60px;'>Tips for Better Results</div>", unsafe_allow_html=True)
 
     # Voice Tips column
     voice_tips_col, text_tips_col = st.columns(2)
