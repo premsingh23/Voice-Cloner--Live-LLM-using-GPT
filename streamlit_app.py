@@ -12,20 +12,26 @@ os.environ['CUDA_VISIBLE_DEVICES'] = ''
 # Check if running on Streamlit Cloud
 is_streamlit_cloud = os.environ.get('STREAMLIT_SHARING', '') == 'true' or os.environ.get('STREAMLIT_CLOUD', '') == 'true'
 
-# Import the main app - all functionality is in app.py
-from app import (
-    load_tts_model, 
-    analyze_voice_characteristics, 
-    process_audio_with_tts_to_file, 
-    safe_file_creation,
-    convert_media_to_wav,
-    download_youtube_video,
-    adjust_speaking_rate,
-    adjust_pitch,
-    smooth_audio,
-    combine_audio_samples,
-    optimize_text_for_better_speech
-)
+# Import the main app with error handling
+try:
+    from app import (
+        load_tts_model, 
+        analyze_voice_characteristics, 
+        process_audio_with_tts_to_file, 
+        safe_file_creation,
+        convert_media_to_wav,
+        download_youtube_video,
+        adjust_speaking_rate,
+        adjust_pitch,
+        smooth_audio,
+        combine_audio_samples,
+        optimize_text_for_better_speech
+    )
+    import_success = True
+except ImportError as e:
+    import_success = False
+    import_error = str(e)
+    logger.error(f"Import error: {import_error}")
 
 # Main streamlit app
 def main():
@@ -129,6 +135,41 @@ def main():
     # Display header
     st.markdown("<h1 class='title'>🎙️ Advanced Voice Cloner</h1>", unsafe_allow_html=True)
     st.markdown("<h2 class='subtitle'>High Quality Voice Cloning with YourTTS</h2>", unsafe_allow_html=True)
+    
+    # Check if imports were successful
+    if not import_success:
+        st.error(f"""
+        ❌ **Failed to import required modules**
+        
+        Error details: {import_error}
+        
+        This app requires specific modules to function correctly. Please check the GitHub repository for installation instructions.
+        
+        Common issues:
+        - TTS package installation problems
+        - Missing system dependencies
+        - PyTorch compatibility issues
+        """)
+        
+        st.markdown("""
+        <div class='info-box'>
+            <h3>Troubleshooting steps:</h3>
+            <ol>
+                <li>Check the app logs for detailed error information</li>
+                <li>Verify all system dependencies in packages.txt are installed</li>
+                <li>Ensure Python package versions in requirements.txt are compatible</li>
+            </ol>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style='text-align: center; margin-top: 30px;'>
+            <a href="https://github.com/premsingh23/Voice-Cloner--Live-LLM-using-GPT" target="_blank">
+                View on GitHub for installation instructions
+            </a>
+        </div>
+        """, unsafe_allow_html=True)
+        return
     
     # Streamlit Cloud warning
     if is_streamlit_cloud:
