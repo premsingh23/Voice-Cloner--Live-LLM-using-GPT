@@ -1,8 +1,1 @@
-ffmpeg
-libsndfile1
-libsndfile1-dev
-libasound2-dev
-portaudio19-dev
-python3-dev
-build-essential
-cmake 
+ffmpeg 
