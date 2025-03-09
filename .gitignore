@@ -1,0 +1,52 @@
+# Python-specific files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Temporary files
+*.log
+*.tmp
+temp/
+tmp/
+0.2.2
+3.5.0
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Project specific
+*.wav
+*.mp3
+*.mp4
+*.ogg 
