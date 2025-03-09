@@ -372,43 +372,60 @@ def main():
                     if match_voice_characteristics and smoothing_level > 0:
                         output_file = smooth_audio(output_file, window_length=smoothing_level)
 
-                    # Display success message and audio
-                    st.markdown("<div class='output-section'>", unsafe_allow_html=True)
-                    st.markdown("<div class='section-title'>3. Generated Voice</div>", unsafe_allow_html=True)
-                    st.markdown(f"<div class='success-box'>✅ Voice generated successfully in {generation_time:.2f} seconds!</div>", unsafe_allow_html=True)
-                    
-                    # Play the generated audio
-                    st.audio(output_file, format="audio/wav")
-                    
-                    # If voice matching was used, show which characteristics were matched
-                    if match_voice_characteristics and st.session_state.voice_characteristics['has_analysis']:
-                        st.markdown("<div class='info-box'>", unsafe_allow_html=True)
-                        st.markdown("**Voice Style Matching Applied:**")
-                        st.markdown("• Speaking rate matched to reference audio")
-                        st.markdown("• Speech pacing and rhythm adapted")
-                        st.markdown("• Text optimized for the detected speaking style")
-                        st.markdown("</div>", unsafe_allow_html=True)
-                    
-                    # Add download button
-                    from datetime import datetime
-                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    download_filename = f"voice_clone_{timestamp}.wav"
-                    
-                    with open(output_file, "rb") as file:
-                        st.download_button(
-                            label="Download Generated Voice",
-                            data=file,
-                            file_name=download_filename,
-                            mime="audio/wav"
-                        )
-                    # Close the output section with a visible footer
-                    st.markdown("""
-                    <div style="text-align: right; font-size: 0.8em; color: #888; margin-top: 10px;">
-                      Generated voice ready for download and use
-                    </div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
+                    # Create the output section container directly using st.container
+                    output_container = st.container()
+                    with output_container:
+                        # Add a border and background to the container using CSS
+                        st.markdown("""
+                        <style>
+                        [data-testid="stVerticalBlock"] > [style*="flex-direction: column"] > [data-testid="stVerticalBlock"] {
+                            background-color: #f5f5f5;
+                            padding: 20px;
+                            border-radius: 10px;
+                            border: 1px solid #e0e0e0;
+                            margin-bottom: 20px;
+                        }
+                        </style>
+                        """, unsafe_allow_html=True)
+                        
+                        # Add the title first
+                        st.markdown("<div class='section-title'>3. Generated Voice</div>", unsafe_allow_html=True)
+                        
+                        # Add content inside the container
+                        st.markdown(f"<div class='success-box'>✅ Voice generated successfully in {generation_time:.2f} seconds!</div>", unsafe_allow_html=True)
+                        
+                        # Play the generated audio
+                        st.audio(output_file, format="audio/wav")
+                        
+                        # If voice matching was used, show which characteristics were matched
+                        if match_voice_characteristics and st.session_state.voice_characteristics['has_analysis']:
+                            st.markdown("<div class='info-box'>", unsafe_allow_html=True)
+                            st.markdown("**Voice Style Matching Applied:**")
+                            st.markdown("• Speaking rate matched to reference audio")
+                            st.markdown("• Speech pacing and rhythm adapted")
+                            st.markdown("• Text optimized for the detected speaking style")
+                            st.markdown("</div>", unsafe_allow_html=True)
+                        
+                        # Add download button
+                        from datetime import datetime
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        download_filename = f"voice_clone_{timestamp}.wav"
+                        
+                        with open(output_file, "rb") as file:
+                            st.download_button(
+                                label="Download Generated Voice",
+                                data=file,
+                                file_name=download_filename,
+                                mime="audio/wav"
+                            )
+                        
+                        # Add a footer message
+                        st.markdown("""
+                        <div style="text-align: right; font-size: 0.8em; color: #888; margin-top: 10px;">
+                          Generated voice ready for download and use
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
                 except Exception as e:
                     error_msg = f"Error generating voice: {str(e)}"
                     logger.error(error_msg)
